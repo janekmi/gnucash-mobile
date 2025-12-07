@@ -1,16 +1,11 @@
-# xxx
+# GnuCash Mobile
 
-A new Flutter project.
+An application for keeping track of GnuCash transactions on the go.
 
-## Getting Started
+Note: this app is not meant to be a standalone implementation of GnuCash. Rather, it's a simple tool for recording transactions as they happen that also allows you to export in a GnuCash-compatible format (CSV).
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Capabilities:
+  - Import a set of accounts (these should be exported from a valid GnuCash instance; `File > Export > Export Account Tree to CSV...`)
+  - Create transactions a GnuCash-compatible, double-bookkeeping fashion
+  - Export said transactions for import into a standalone GnuCash instance (`File > Import > Import Transactions from CSV...`). Use the "GnuCash Export Format".
+  - Set favorite debit and credit accounts for pre-populating transaction fields.
