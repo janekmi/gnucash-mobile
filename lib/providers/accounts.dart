@@ -12,19 +12,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Account {
   double balance = 0.0; // non-standard
   List<Account> children = []; // non-standard
-  String code;
-  String commodityM;
-  String commodityN;
-  String color;
-  String description;
-  String fullName;
-  bool hidden;
-  String notes;
-  String parentFullName; // non-standard
-  bool placeholder; // Whether transactions can be placed in this account?
-  bool tax;
-  String type;
-  String name;
+  late String code;
+  late String commodityM;
+  late String commodityN;
+  late String color;
+  late String description;
+  late String fullName;
+  late bool hidden;
+  late String notes;
+  late String parentFullName; // non-standard
+  late bool placeholder; // Whether transactions can be placed in this account?
+  late bool tax;
+  late String type;
+  late String name;
 
   Account.fromJson(Map<String, dynamic> json) {
     this.balance = json['balance'];
@@ -164,7 +164,7 @@ class AccountsModel extends ChangeNotifier {
 
   final List<Account> _recentCreditAccounts = [];
   final List<Account> _recentDebitAccounts = [];
-  List<Account> _accounts;
+  late List<Account> _accounts;
 
   UnmodifiableListView<Account> get validTransactionAccounts =>
       UnmodifiableListView(_validTransactionAccounts);

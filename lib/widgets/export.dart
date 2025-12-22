@@ -17,8 +17,8 @@ class Export extends StatefulWidget {
 }
 
 class _ExportState extends State<Export> {
-  String _directoryPath;
-  String _directory;
+  late String _directoryPath;
+  late String _directory;
 
   bool deleteTransactionsOnExport = false;
 

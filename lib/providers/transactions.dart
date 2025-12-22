@@ -7,22 +7,22 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Transaction {
-  String date;
-  String id;
-  int number;
-  String description;
-  String notes;
-  String commodityCurrency;
-  String voidReason;
-  String action;
-  String memo;
-  String fullAccountName;
-  String accountName;
-  String amountWithSymbol;
-  double amount;
+  late String date;
+  late String id;
+  late int number;
+  late String description;
+  late String notes;
+  late String commodityCurrency;
+  late String voidReason;
+  late String action;
+  late String memo;
+  late String fullAccountName;
+  late String accountName;
+  late String amountWithSymbol;
+  late double amount;
   String reconcile = "n";
-  String reconcileDate;
-  int ratePrice;
+  late String reconcileDate;
+  late int ratePrice;
 
   Transaction();
 
