@@ -12,7 +12,7 @@ import 'account_view.dart';
 class ListOfAccounts extends StatelessWidget {
   final List<Account> accounts;
 
-  ListOfAccounts({Key key, @required this.accounts}) : super(key: key);
+  ListOfAccounts({Key? key, required this.accounts}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

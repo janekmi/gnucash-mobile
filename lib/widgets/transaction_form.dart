@@ -8,9 +8,9 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 
 class TransactionForm extends StatefulWidget {
-  final Account toAccount;
+  final Account? toAccount;
 
-  TransactionForm({Key key, this.toAccount}) : super(key: key);
+  TransactionForm({Key? key, this.toAccount}) : super(key: key);
   @override
   _TransactionFormState createState() => _TransactionFormState();
 }

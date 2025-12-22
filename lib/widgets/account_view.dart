@@ -11,7 +11,7 @@ import '../constants.dart';
 class AccountView extends StatelessWidget {
   final Account account;
 
-  AccountView({Key key, @required this.account}) : super(key: key);
+  AccountView({Key? key, required this.account}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
