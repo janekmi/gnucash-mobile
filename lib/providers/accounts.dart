@@ -113,7 +113,7 @@ class AccountsModel extends ChangeNotifier {
 
   List<Account> _validTransactionAccounts = [];
 
-  Future<Account> get favoriteDebitAccount async {
+  Future<Account?> get favoriteDebitAccount async {
     final prefs = await _prefs;
     final favoriteDebitAccountString = prefs.getString('favoriteDebitAccount');
 
@@ -138,7 +138,7 @@ class AccountsModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Account> get favoriteCreditAccount async {
+  Future<Account?> get favoriteCreditAccount async {
     final prefs = await _prefs;
     final favoriteCreditAccountString =
         prefs.getString('favoriteCreditAccount');

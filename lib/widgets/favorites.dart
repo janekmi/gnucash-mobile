@@ -21,10 +21,10 @@ class Favorites extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                FutureBuilder<Account>(
+                FutureBuilder<Account?>(
                     future: Provider.of<AccountsModel>(context, listen: false)
                         .favoriteDebitAccount,
-                    builder: (context, AsyncSnapshot<Account> snapshot) {
+                    builder: (context, AsyncSnapshot<Account?> snapshot) {
                       return DropdownButton<Account>(
                         hint: Text("Favorite Debit Account"),
                         isExpanded: true,
@@ -48,10 +48,10 @@ class Favorites extends StatelessWidget {
                             : null,
                       );
                     }),
-                FutureBuilder<Account>(
+                FutureBuilder<Account?>(
                     future: Provider.of<AccountsModel>(context, listen: false)
                         .favoriteCreditAccount,
-                    builder: (context, AsyncSnapshot<Account> snapshot) {
+                    builder: (context, AsyncSnapshot<Account?> snapshot) {
                       return DropdownButton<Account>(
                         hint: Text("Favorite Credit Account"),
                         isExpanded: true,

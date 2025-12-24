@@ -88,7 +88,7 @@ class TransactionsModel extends ChangeNotifier {
     return File('$path/transactions.csv');
   }
 
-  Future<String> readTransactionsCsv() async {
+  Future<String?> readTransactionsCsv() async {
     try {
       final file = await _localFile;
       final string = await file.readAsString();
@@ -107,7 +107,7 @@ class TransactionsModel extends ChangeNotifier {
     return UnmodifiableMapView(_transactionsByAccountFullName);
   }
 
-  Future<UnmodifiableListView<Transaction>> get transactions async {
+  Future<UnmodifiableListView<Transaction>?> get transactions async {
     try {
       final file = await _localFile;
       String contents = await file.readAsString();

@@ -70,9 +70,9 @@ class _TransactionFormState extends State<TransactionForm> {
                   onEditingComplete: () => node.nextFocus(),
                   onSaved: (value) {
                     final amount = simpleCurrencyNumberFormat.parse(value!);
-                    _transactions[0].amount = amount;
+                    _transactions[0].amount = amount.toDouble();
                     _transactions[0].amountWithSymbol = value;
-                    _transactions[1].amount = -amount;
+                    _transactions[1].amount = -amount.toDouble();
                     _transactions[1].amountWithSymbol = "-${value!}";
                   },
                   textInputAction: TextInputAction.next,
@@ -114,10 +114,10 @@ class _TransactionFormState extends State<TransactionForm> {
                   return null;
                 },
               ),
-              FutureBuilder<Account>(
+              FutureBuilder<Account?>(
                   future: Provider.of<AccountsModel>(context, listen: false)
                       .favoriteCreditAccount,
-                  builder: (context, AsyncSnapshot<Account> snapshot) {
+                  builder: (context, AsyncSnapshot<Account?> snapshot) {
                     return DropdownButtonFormField<Account>(
                         decoration: const InputDecoration(
                           hintText: 'Credit Account',
@@ -155,10 +155,10 @@ class _TransactionFormState extends State<TransactionForm> {
                                         widget.toAccount!.fullName)
                                 : null);
                   }),
-              FutureBuilder<Account>(
+              FutureBuilder<Account?>(
                   future: Provider.of<AccountsModel>(context, listen: false)
                       .favoriteDebitAccount,
-                  builder: (context, AsyncSnapshot<Account> snapshot) {
+                  builder: (context, AsyncSnapshot<Account?> snapshot) {
                     return DropdownButtonFormField<Account>(
                       decoration: const InputDecoration(
                         hintText: 'Debit Account',

@@ -18,7 +18,11 @@ class Intro extends StatelessWidget {
               WidgetStateProperty.all<Color>(Constants.darkAccent),
         ),
         onPressed: () async {
-          FilePickerResult result = await FilePicker.platform.pickFiles();
+          FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+          if (result == null) {
+            return;
+          }
 
           try {
             final _file = File(result.files.single.path!);

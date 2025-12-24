@@ -29,7 +29,7 @@ class Constants {
           fontWeight: FontWeight.w800,
         ),
       ).headline6,
-    ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: lightAccent), colorScheme: ColorScheme(background: lightBG),
+    ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: lightAccent), colorScheme: ColorScheme(brightness: Brightness.light),
   );
 
   static ThemeData darkTheme = ThemeData(

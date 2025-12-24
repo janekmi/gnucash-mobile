@@ -104,8 +104,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           return;
                         }
 
-                        FilePickerResult result =
+                        FilePickerResult? result =
                             await FilePicker.platform.pickFiles();
+
+                        if (result == null) {
+                          return;
+                        }
 
                         try {
                           final _file = File(result.files.single.path!);

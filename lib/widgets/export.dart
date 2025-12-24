@@ -55,7 +55,7 @@ class _ExportState extends State<Export> {
         child: FutureBuilder(
             future: Provider.of<TransactionsModel>(context, listen: false)
                 .readTransactionsCsv(),
-            builder: (context, AsyncSnapshot<String> snapshot) {
+            builder: (context, AsyncSnapshot<String?> snapshot) {
               String text;
               if (snapshot.hasData) {
                 // Remove 1 for header row, divide by 2 for double entry
