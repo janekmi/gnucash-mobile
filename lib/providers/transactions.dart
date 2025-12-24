@@ -32,7 +32,7 @@ class Transaction {
 
     this.date = trimmed[0] ?? "";
     this.id = trimmed[1];
-    this.number = int.tryParse(trimmed[2]) ?? null;
+    this.number = int.tryParse(trimmed[2]) ?? 0;
     this.description = trimmed[3];
     this.notes = trimmed[4];
     this.commodityCurrency = trimmed[5];
@@ -42,10 +42,10 @@ class Transaction {
     this.fullAccountName = trimmed[9];
     this.accountName = trimmed[10];
     this.amountWithSymbol = trimmed[11];
-    this.amount = double.tryParse(trimmed[12]) ?? null;
+    this.amount = double.tryParse(trimmed[12]) ?? 0;
     this.reconcile = trimmed[13];
     this.reconcileDate = trimmed[14];
-    this.ratePrice = int.tryParse(trimmed[15]) ?? null;
+    this.ratePrice = int.tryParse(trimmed[15]) ?? 0;
   }
 
   @override
@@ -126,13 +126,13 @@ class TransactionsModel extends ChangeNotifier {
       final Map<String, List<Transaction>> _transactionsByAccountFullName =
           Map();
       for (var line in _parsed) {
-        final _transaction = Transaction.fromList(line);
+        final Transaction _transaction = Transaction.fromList(line)!;
         _transactions.add(_transaction);
 
         // Add to representation of balances
         if (_transactionsByAccountFullName
             .containsKey(_transaction.fullAccountName)) {
-          _transactionsByAccountFullName[_transaction.fullAccountName]
+          _transactionsByAccountFullName[_transaction.fullAccountName]!
               .add(_transaction);
         } else {
           _transactionsByAccountFullName[_transaction.fullAccountName] = [
@@ -170,8 +170,8 @@ class TransactionsModel extends ChangeNotifier {
     for (var _transaction in transactions) {
       if (_transactionsByAccountFullName
           .containsKey(_transaction.fullAccountName)) {
-        _transactionsByAccountFullName[_transaction.fullAccountName]
-            .add(_transaction);
+        _transactionsByAccountFullName[_transaction.fullAccountName]!
+            .add(_transaction!);
       } else {
         _transactionsByAccountFullName[_transaction.fullAccountName] = [
           _transaction

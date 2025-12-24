@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
       return FutureBuilder<List<Account>>(
           future: Provider.of<AccountsModel>(context, listen: false).accounts,
           builder: (context, AsyncSnapshot<List<Account>> snapshot) {
-            final accounts = snapshot.hasData ? snapshot.data : [];
+            final List<Account> accounts = snapshot.hasData ? snapshot.data! : [];
             final _hasImported = accounts.length > 0;
 
             return Scaffold(
@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                         if (result != null) {
                           try {
-                            final _file = File(result.files.single.path);
+                            final _file = File(result.files.single.path!);
                             String contents = await _file.readAsString();
                             Provider.of<AccountsModel>(context, listen: false)
                                 .addAll(contents);
@@ -168,10 +168,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         (context, AsyncSnapshot<List<Transaction>> snapshot) {
                       return ListTile(
                           title: Text(
-                              'Delete ${snapshot.hasData ? snapshot.data.length ~/ 2 : 0} Transaction(s)'),
+                              'Delete ${snapshot.hasData ? snapshot.data!.length ~/ 2 : 0} Transaction(s)'),
                           onTap: () {
                             if (!snapshot.hasData ||
-                                snapshot.data.length == 0) {
+                                snapshot.data!.length == 0) {
                               Navigator.pop(context);
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

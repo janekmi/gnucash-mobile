@@ -215,7 +215,7 @@ class AccountsModel extends ChangeNotifier {
     for (var _account in _accounts) {
       if (_lookup.containsKey(_account.parentFullName)) {
         final _parent = _lookup[_account.parentFullName];
-        _parent.children.add(_account);
+        _parent!.children.add(_account);
       } else {
         _hierarchicalAccounts.add(_account);
       }

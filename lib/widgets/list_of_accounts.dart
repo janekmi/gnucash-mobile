@@ -39,7 +39,7 @@ class ListOfAccounts extends StatelessWidget {
                 in transactionsModel.transactionsByAccountFullName.keys) {
               if (key.startsWith(_account.fullName)) {
                 _transactions.addAll(
-                    transactionsModel.transactionsByAccountFullName[key]);
+                    transactionsModel.transactionsByAccountFullName[key]!);
               }
             }
             final double _balance = _transactions.fold(0.0,

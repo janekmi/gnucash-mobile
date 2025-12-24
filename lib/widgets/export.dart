@@ -58,7 +58,7 @@ class _ExportState extends State<Export> {
               if (snapshot.hasData) {
                 // Remove 1 for header row, divide by 2 for double entry
                 final _numTransactions =
-                    ("\n".allMatches(snapshot.data).length - 1) / 2;
+                    ("\n".allMatches(snapshot.data!).length - 1) / 2;
                 _text = "${_numTransactions.toInt()} transaction(s)";
               } else {
                 _text = "0 transactions";
@@ -97,7 +97,7 @@ class _ExportState extends State<Export> {
                     value: deleteTransactionsOnExport,
                     onChanged: (value) {
                       setState(() {
-                        deleteTransactionsOnExport = value;
+                        deleteTransactionsOnExport = value!;
                       });
                     },
                   ),
@@ -124,7 +124,7 @@ class _ExportState extends State<Export> {
                       try {
                         final _fileName =
                             "$_directoryPath/${_yearMonthDay}_${DateTime.now().millisecond}.gnucash_transactions.csv";
-                        await File(_fileName).writeAsString(snapshot.data);
+                        await File(_fileName).writeAsString(snapshot.data!);
 
                         if (deleteTransactionsOnExport) {
                           Provider.of<TransactionsModel>(context, listen: false)

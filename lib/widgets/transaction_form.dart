@@ -69,15 +69,15 @@ class _TransactionFormState extends State<TransactionForm> {
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   onEditingComplete: () => _node.nextFocus(),
                   onSaved: (value) {
-                    final _amount = _simpleCurrencyNumberFormat.parse(value);
+                    final _amount = _simpleCurrencyNumberFormat.parse(value!);
                     _transactions[0].amount = _amount;
-                    _transactions[0].amountWithSymbol = value;
+                    _transactions[0].amountWithSymbol = value!;
                     _transactions[1].amount = -_amount;
-                    _transactions[1].amountWithSymbol = "-" + value;
+                    _transactions[1].amountWithSymbol = "-" + value!;
                   },
                   textInputAction: TextInputAction.next,
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return 'Please enter a valid amount';
                     }
 
@@ -102,13 +102,13 @@ class _TransactionFormState extends State<TransactionForm> {
                 ),
                 onEditingComplete: () => _node.nextFocus(),
                 onSaved: (value) {
-                  _transactions[0].description = value;
-                  _transactions[1].description = value;
+                  _transactions[0].description = value!;
+                  _transactions[1].description = value!;
                 },
                 textCapitalization: TextCapitalization.sentences,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return 'Please enter a valid description';
                   }
                   return null;
@@ -135,8 +135,8 @@ class _TransactionFormState extends State<TransactionForm> {
                         }).toList(),
                         onChanged: (value) {},
                         onSaved: (value) {
-                          _transactions[0].fullAccountName = value.fullName;
-                          _transactions[0].accountName = value.name;
+                          _transactions[0].fullAccountName = value!.fullName;
+                          _transactions[0].accountName = value!.name;
                         },
                         validator: (value) {
                           if (value == null) {
@@ -147,12 +147,12 @@ class _TransactionFormState extends State<TransactionForm> {
                         value: snapshot.hasData
                             ? accounts.validTransactionAccounts.firstWhere(
                                 (account) =>
-                                    account.fullName == snapshot.data.fullName)
+                                    account.fullName == snapshot.data!.fullName)
                             : widget.toAccount != null
                                 ? accounts.validTransactionAccounts.firstWhere(
                                     (account) =>
                                         account.fullName ==
-                                        widget.toAccount.fullName)
+                                        widget.toAccount!.fullName)
                                 : null);
                   }),
               FutureBuilder<Account>(
@@ -173,8 +173,8 @@ class _TransactionFormState extends State<TransactionForm> {
                       }).toList(),
                       onChanged: (value) {},
                       onSaved: (value) {
-                        _transactions[1].fullAccountName = value.fullName;
-                        _transactions[1].accountName = value.name;
+                        _transactions[1].fullAccountName = value!.fullName;
+                        _transactions[1].accountName = value!.name;
                       },
                       validator: (value) {
                         if (value == null) {
@@ -185,7 +185,7 @@ class _TransactionFormState extends State<TransactionForm> {
                       value: snapshot.hasData
                           ? accounts.validTransactionAccounts.firstWhere(
                               (account) =>
-                                  account.fullName == snapshot.data.fullName)
+                                  account.fullName == snapshot.data!.fullName)
                           : null,
                     );
                   }),
@@ -196,7 +196,7 @@ class _TransactionFormState extends State<TransactionForm> {
                 controller: _dateInputController,
                 onSaved: (value) {
                   _transactions[0].date = DateFormat('yyyy-MM-dd')
-                      .format(DateFormat.yMd().parse(value));
+                      .format(DateFormat.yMd().parse(value!));
                 },
                 onTap: () async {
                   final _now = DateTime.now();
@@ -207,14 +207,14 @@ class _TransactionFormState extends State<TransactionForm> {
                     lastDate: DateTime(_now.year + 10),
                   );
 
-                  _dateInputController.text = DateFormat.yMd().format(_date);
+                  _dateInputController.text = DateFormat.yMd().format(_date!);
                 },
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return 'Please enter a valid date';
                   }
                   try {
-                    DateFormat.yMd().parse(value);
+                    DateFormat.yMd().parse(value!);
                   } catch (FormatException) {
                     return 'Please enter a valid date';
                   }
@@ -228,7 +228,7 @@ class _TransactionFormState extends State<TransactionForm> {
                 ),
                 textCapitalization: TextCapitalization.sentences,
                 onSaved: (value) {
-                  _transactions[0].notes = value;
+                  _transactions[0].notes = value!;
                 },
               ),
             ],
@@ -243,9 +243,9 @@ class _TransactionFormState extends State<TransactionForm> {
           onPressed: () {
             // Validate will return true if the form is valid, or false if
             // the form is invalid.
-            if (_key.currentState.validate()) {
+            if (_key.currentState!.validate()) {
               // Process data.
-              _key.currentState.save();
+              _key.currentState!.save();
 
               final id = UniqueKey().toString();
               _transactions[0].id = id;

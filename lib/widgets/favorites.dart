@@ -37,12 +37,12 @@ class Favorites extends StatelessWidget {
                           );
                         }).toList(),
                         onChanged: (value) {
-                          accounts.setFavoriteDebitAccount(value);
+                          accounts.setFavoriteDebitAccount(value!);
                         },
                         value: snapshot.hasData
                             ? accounts.validTransactionAccounts.firstWhere(
                                 (account) =>
-                                    account.fullName == snapshot.data.fullName)
+                                    account.fullName == snapshot.data!.fullName)
                             : null,
                       );
                     }),
@@ -64,12 +64,12 @@ class Favorites extends StatelessWidget {
                           );
                         }).toList(),
                         onChanged: (value) {
-                          accounts.setFavoriteCreditAccount(value);
+                          accounts.setFavoriteCreditAccount(value!);
                         },
                         value: snapshot.hasData
                             ? accounts.validTransactionAccounts.firstWhere(
                                 (account) =>
-                                    account.fullName == snapshot.data.fullName)
+                                    account.fullName == snapshot.data!.fullName)
                             : null,
                       );
                     }),
