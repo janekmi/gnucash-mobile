@@ -10,7 +10,7 @@ import '../constants.dart';
 class TransactionForm extends StatefulWidget {
   final Account? toAccount;
 
-  TransactionForm({Key? key, this.toAccount}) : super(key: key);
+  const TransactionForm({super.key, this.toAccount});
   @override
   _TransactionFormState createState() => _TransactionFormState();
 }
@@ -37,8 +37,8 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    final _node = FocusScope.of(context);
-    final _simpleCurrencyNumberFormat = NumberFormat.simpleCurrency(
+    final node = FocusScope.of(context);
+    final simpleCurrencyNumberFormat = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
 
     return Consumer<AccountsModel>(builder: (context, accounts, child) {
@@ -67,13 +67,13 @@ class _TransactionFormState extends State<TransactionForm> {
                     hintText: 'Amount',
                   ),
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  onEditingComplete: () => _node.nextFocus(),
+                  onEditingComplete: () => node.nextFocus(),
                   onSaved: (value) {
-                    final _amount = _simpleCurrencyNumberFormat.parse(value!);
-                    _transactions[0].amount = _amount;
-                    _transactions[0].amountWithSymbol = value!;
-                    _transactions[1].amount = -_amount;
-                    _transactions[1].amountWithSymbol = "-" + value!;
+                    final amount = simpleCurrencyNumberFormat.parse(value!);
+                    _transactions[0].amount = amount;
+                    _transactions[0].amountWithSymbol = value;
+                    _transactions[1].amount = -amount;
+                    _transactions[1].amountWithSymbol = "-${value!}";
                   },
                   textInputAction: TextInputAction.next,
                   validator: (value) {
@@ -86,12 +86,12 @@ class _TransactionFormState extends State<TransactionForm> {
                 ),
                 onFocusChange: (hasFocus) {
                   if (!hasFocus) {
-                    final _rawValue = _visibleAmountInputController.value.text;
-                    final _simpleCurrencyValue = _simpleCurrencyNumberFormat
-                        .format(_simpleCurrencyNumberFormat.parse(_rawValue));
+                    final rawValue = _visibleAmountInputController.value.text;
+                    final simpleCurrencyValue = simpleCurrencyNumberFormat
+                        .format(simpleCurrencyNumberFormat.parse(rawValue));
                     _visibleAmountInputController.value =
                         _visibleAmountInputController.value.copyWith(
-                      text: _simpleCurrencyValue,
+                      text: simpleCurrencyValue,
                     );
                   }
                 },
@@ -100,10 +100,10 @@ class _TransactionFormState extends State<TransactionForm> {
                 decoration: const InputDecoration(
                   hintText: 'Description',
                 ),
-                onEditingComplete: () => _node.nextFocus(),
+                onEditingComplete: () => node.nextFocus(),
                 onSaved: (value) {
                   _transactions[0].description = value!;
-                  _transactions[1].description = value!;
+                  _transactions[1].description = value;
                 },
                 textCapitalization: TextCapitalization.sentences,
                 textInputAction: TextInputAction.next,
@@ -136,7 +136,7 @@ class _TransactionFormState extends State<TransactionForm> {
                         onChanged: (value) {},
                         onSaved: (value) {
                           _transactions[0].fullAccountName = value!.fullName;
-                          _transactions[0].accountName = value!.name;
+                          _transactions[0].accountName = value.name;
                         },
                         validator: (value) {
                           if (value == null) {
@@ -144,7 +144,7 @@ class _TransactionFormState extends State<TransactionForm> {
                           }
                           return null;
                         },
-                        value: snapshot.hasData
+                        initialValue: snapshot.hasData
                             ? accounts.validTransactionAccounts.firstWhere(
                                 (account) =>
                                     account.fullName == snapshot.data!.fullName)
@@ -174,7 +174,7 @@ class _TransactionFormState extends State<TransactionForm> {
                       onChanged: (value) {},
                       onSaved: (value) {
                         _transactions[1].fullAccountName = value!.fullName;
-                        _transactions[1].accountName = value!.name;
+                        _transactions[1].accountName = value.name;
                       },
                       validator: (value) {
                         if (value == null) {
@@ -182,7 +182,7 @@ class _TransactionFormState extends State<TransactionForm> {
                         }
                         return null;
                       },
-                      value: snapshot.hasData
+                      initialValue: snapshot.hasData
                           ? accounts.validTransactionAccounts.firstWhere(
                               (account) =>
                                   account.fullName == snapshot.data!.fullName)
@@ -199,22 +199,22 @@ class _TransactionFormState extends State<TransactionForm> {
                       .format(DateFormat.yMd().parse(value!));
                 },
                 onTap: () async {
-                  final _now = DateTime.now();
-                  final _date = await showDatePicker(
+                  final now = DateTime.now();
+                  final date = await showDatePicker(
                     context: context,
-                    initialDate: _now,
-                    firstDate: DateTime(_now.year - 10),
-                    lastDate: DateTime(_now.year + 10),
+                    initialDate: now,
+                    firstDate: DateTime(now.year - 10),
+                    lastDate: DateTime(now.year + 10),
                   );
 
-                  _dateInputController.text = DateFormat.yMd().format(_date!);
+                  _dateInputController.text = DateFormat.yMd().format(date!);
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Please enter a valid date';
                   }
                   try {
-                    DateFormat.yMd().parse(value!);
+                    DateFormat.yMd().parse(value);
                   } catch (FormatException) {
                     return 'Please enter a valid date';
                   }

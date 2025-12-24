@@ -28,49 +28,51 @@ class Transaction {
 
   Transaction.fromList(List<dynamic> items) {
     final trimmed = [];
-    for (var item in items) trimmed.add(item.trim());
+    for (var item in items) {
+      trimmed.add(item.trim());
+    }
 
-    this.date = trimmed[0] ?? "";
-    this.id = trimmed[1];
-    this.number = int.tryParse(trimmed[2]) ?? 0;
-    this.description = trimmed[3];
-    this.notes = trimmed[4];
-    this.commodityCurrency = trimmed[5];
-    this.voidReason = trimmed[6];
-    this.action = trimmed[7];
-    this.memo = trimmed[8];
-    this.fullAccountName = trimmed[9];
-    this.accountName = trimmed[10];
-    this.amountWithSymbol = trimmed[11];
-    this.amount = double.tryParse(trimmed[12]) ?? 0;
-    this.reconcile = trimmed[13];
-    this.reconcileDate = trimmed[14];
-    this.ratePrice = int.tryParse(trimmed[15]) ?? 0;
+    date = trimmed[0] ?? "";
+    id = trimmed[1];
+    number = int.tryParse(trimmed[2]) ?? 0;
+    description = trimmed[3];
+    notes = trimmed[4];
+    commodityCurrency = trimmed[5];
+    voidReason = trimmed[6];
+    action = trimmed[7];
+    memo = trimmed[8];
+    fullAccountName = trimmed[9];
+    accountName = trimmed[10];
+    amountWithSymbol = trimmed[11];
+    amount = double.tryParse(trimmed[12]) ?? 0;
+    reconcile = trimmed[13];
+    reconcileDate = trimmed[14];
+    ratePrice = int.tryParse(trimmed[15]) ?? 0;
   }
 
   @override
   toString() {
-    return """Transaction{date: ${this.date}, id: ${this.id}, number: ${this.number}, description: ${this.description}, notes: ${this.notes}, commodityCurrency: ${this.commodityCurrency}, voidReason: ${this.voidReason}, action: ${this.action}, memo: ${this.memo}, fullAccountName: ${this.fullAccountName}, accountName: ${this.accountName}, amountWithSymbol: ${this.amountWithSymbol}, amount: ${this.amount}, reconcile: ${this.reconcile}, reconcileDate: ${this.reconcileDate}, ratePrice: ${this.ratePrice}}""";
+    return """Transaction{date: ${date}, id: ${id}, number: ${number}, description: ${description}, notes: ${notes}, commodityCurrency: ${commodityCurrency}, voidReason: ${voidReason}, action: ${action}, memo: ${memo}, fullAccountName: ${fullAccountName}, accountName: ${accountName}, amountWithSymbol: ${amountWithSymbol}, amount: ${amount}, reconcile: ${reconcile}, reconcileDate: ${reconcileDate}, ratePrice: ${ratePrice}}""";
   }
 
   List<dynamic> toList() {
     return [
-      this.date ?? "",
-      this.id ?? "",
-      this.number ?? "",
-      this.description ?? "",
-      this.notes ?? "",
-      this.commodityCurrency ?? "",
-      this.voidReason ?? "",
-      this.action ?? "",
-      this.memo ?? "",
-      this.fullAccountName ?? "",
-      this.accountName ?? "",
-      this.amountWithSymbol ?? "",
-      this.amount ?? "",
-      this.reconcile ?? "",
-      this.reconcileDate ?? "",
-      this.ratePrice ?? ""
+      date ?? "",
+      id ?? "",
+      number ?? "",
+      description ?? "",
+      notes ?? "",
+      commodityCurrency ?? "",
+      voidReason ?? "",
+      action ?? "",
+      memo ?? "",
+      fullAccountName ?? "",
+      accountName ?? "",
+      amountWithSymbol ?? "",
+      amount ?? "",
+      reconcile ?? "",
+      reconcileDate ?? "",
+      ratePrice ?? ""
     ];
   }
 }
@@ -88,9 +90,9 @@ class TransactionsModel extends ChangeNotifier {
 
   Future<String> readTransactionsCsv() async {
     try {
-      final _file = await _localFile;
-      final _string = await _file.readAsString();
-      return "Date,Transaction ID,Number,Description,Notes,Commodity/Currency,Void Reason,Action,Memo,Full Account Name,Account Name,Amount With Sym.,Amount Num,Reconcile,Reconcile Date,Rate/Price\n$_string";
+      final file = await _localFile;
+      final string = await file.readAsString();
+      return "Date,Transaction ID,Number,Description,Notes,Commodity/Currency,Void Reason,Action,Memo,Full Account Name,Account Name,Amount With Sym.,Amount Num,Reconcile,Reconcile Date,Rate/Price\n$string";
     } catch (e) {
       print("readTransactionsCsv error");
       print(e);
@@ -98,7 +100,7 @@ class TransactionsModel extends ChangeNotifier {
     }
   }
 
-  Map<String, List<Transaction>> _transactionsByAccountFullName = Map();
+  Map<String, List<Transaction>> _transactionsByAccountFullName = {};
 
   UnmodifiableMapView<String, List<Transaction>>
       get transactionsByAccountFullName {
@@ -110,40 +112,40 @@ class TransactionsModel extends ChangeNotifier {
       final file = await _localFile;
       String contents = await file.readAsString();
 
-      var _detector = new FirstOccurrenceSettingsDetector(
+      var detector = FirstOccurrenceSettingsDetector(
         eols: ['\r\n', '\n'],
       );
 
-      final _converter = CsvToListConverter(
-        csvSettingsDetector: _detector,
+      final converter = CsvToListConverter(
+        csvSettingsDetector: detector,
         textDelimiter: '"',
         shouldParseNumbers: false,
       );
 
-      final _parsed = _converter.convert(contents.trim());
+      final parsed = converter.convert(contents.trim());
 
-      final _transactions = <Transaction>[];
-      final Map<String, List<Transaction>> _transactionsByAccountFullName =
-          Map();
-      for (var line in _parsed) {
-        final Transaction _transaction = Transaction.fromList(line)!;
-        _transactions.add(_transaction);
+      final transactions = <Transaction>[];
+      final Map<String, List<Transaction>> transactionsByAccountFullName =
+          {};
+      for (var line in parsed) {
+        final Transaction transaction = Transaction.fromList(line);
+        transactions.add(transaction);
 
         // Add to representation of balances
-        if (_transactionsByAccountFullName
-            .containsKey(_transaction.fullAccountName)) {
-          _transactionsByAccountFullName[_transaction.fullAccountName]!
-              .add(_transaction);
+        if (transactionsByAccountFullName
+            .containsKey(transaction.fullAccountName)) {
+          transactionsByAccountFullName[transaction.fullAccountName]!
+              .add(transaction);
         } else {
-          _transactionsByAccountFullName[_transaction.fullAccountName] = [
-            _transaction
+          transactionsByAccountFullName[transaction.fullAccountName] = [
+            transaction
           ];
         }
       }
 
-      this._transactionsByAccountFullName = _transactionsByAccountFullName;
+      this._transactionsByAccountFullName = transactionsByAccountFullName;
 
-      return UnmodifiableListView(_transactions);
+      return UnmodifiableListView(transactions);
     } catch (e) {
       print("readTransactions error");
       print(e);
@@ -153,12 +155,12 @@ class TransactionsModel extends ChangeNotifier {
 
   void addAll(List<Transaction> transactions) async {
     final file = await _localFile;
-    final _csvString = const ListToCsvConverter(eol: "\n")
+    final csvString = const ListToCsvConverter(eol: "\n")
         .convert(transactions.map((t) => t.toList()).toList());
 
     try {
       file.writeAsString(
-        "$_csvString\n",
+        "$csvString\n",
         mode: FileMode.append,
       );
     } catch (e) {
@@ -171,7 +173,7 @@ class TransactionsModel extends ChangeNotifier {
       if (_transactionsByAccountFullName
           .containsKey(_transaction.fullAccountName)) {
         _transactionsByAccountFullName[_transaction.fullAccountName]!
-            .add(_transaction!);
+            .add(_transaction);
       } else {
         _transactionsByAccountFullName[_transaction.fullAccountName] = [
           _transaction
@@ -208,7 +210,7 @@ class TransactionsModel extends ChangeNotifier {
         }
       }
 
-      if (toRemove.length == 0) {
+      if (toRemove.isEmpty) {
         return false;
       }
 

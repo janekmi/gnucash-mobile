@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 
 class Favorites extends StatelessWidget {
+  const Favorites({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AccountsModel>(builder: (context, accounts, child) {
@@ -80,7 +82,7 @@ class Favorites extends StatelessWidget {
                 TextButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(Constants.darkAccent),
+                        WidgetStateProperty.all<Color>(Constants.darkAccent),
                   ),
                   onPressed: () {
                     accounts.removeFavoriteDebitAccount();
@@ -95,7 +97,7 @@ class Favorites extends StatelessWidget {
                 TextButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(Constants.darkAccent),
+                        WidgetStateProperty.all<Color>(Constants.darkAccent),
                   ),
                   onPressed: () {
                     accounts.removeFavoriteCreditAccount();

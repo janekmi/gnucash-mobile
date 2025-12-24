@@ -11,31 +11,31 @@ import '../constants.dart';
 class AccountView extends StatelessWidget {
   final Account account;
 
-  AccountView({Key? key, required this.account}) : super(key: key);
+  const AccountView({super.key, required this.account});
 
   @override
   Widget build(BuildContext context) {
     // Deliver simpler view if this account cannot hold transactions
-    if (this.account.placeholder) {
+    if (account.placeholder) {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Constants.darkBG,
-          title: Text(this.account.fullName),
+          title: Text(account.fullName),
         ),
-        body: ListOfAccounts(accounts: this.account.children),
+        body: ListOfAccounts(accounts: account.children),
         floatingActionButton: Builder(builder: (context) {
           return FloatingActionButton(
             backgroundColor: Constants.darkBG,
             child: Icon(Icons.add),
             onPressed: () async {
-              final _success = await Navigator.push(
+              final success = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => TransactionForm(),
                 ),
               );
 
-              if (_success != null && _success) {
+              if (success != null && success) {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("Transaction created!")));
               }
@@ -56,15 +56,15 @@ class AccountView extends StatelessWidget {
               Tab(icon: Icon(Icons.account_balance_sharp)),
             ],
           ),
-          title: Text(this.account.fullName),
+          title: Text(account.fullName),
         ),
         body: TabBarView(
           children: [
-            ListOfAccounts(accounts: this.account.children),
+            ListOfAccounts(accounts: account.children),
             TransactionsView(
                 transactions: Provider.of<TransactionsModel>(context,
                             listen: true)
-                        .transactionsByAccountFullName[this.account.fullName] ??
+                        .transactionsByAccountFullName[account.fullName] ??
                     [])
           ],
         ),
@@ -73,16 +73,16 @@ class AccountView extends StatelessWidget {
             backgroundColor: Constants.darkBG,
             child: Icon(Icons.add),
             onPressed: () async {
-              final _success = await Navigator.push(
+              final success = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => TransactionForm(
-                    toAccount: this.account,
+                    toAccount: account,
                   ),
                 ),
               );
 
-              if (_success != null && _success) {
+              if (success != null && success) {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("Transaction created!")));
               }

@@ -6,16 +6,16 @@ import 'package:provider/provider.dart';
 class TransactionsView extends StatelessWidget {
   final List<Transaction> transactions;
 
-  TransactionsView({Key? key, required this.transactions}) : super(key: key);
+  const TransactionsView({super.key, required this.transactions});
 
 
   @override
   Widget build(BuildContext context) {
-    final _simpleCurrencyNumberFormat = NumberFormat.simpleCurrency(
+    final simpleCurrencyNumberFormat = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
 
     return Consumer<TransactionsModel>(builder: (context, transactions, child) {
-      final _transactionsBuilder = ListView.builder(
+      final transactionsBuilder = ListView.builder(
         itemBuilder: (context, index) {
           if (index.isOdd) {
             return Divider();
@@ -26,24 +26,24 @@ class TransactionsView extends StatelessWidget {
             return null;
           }
 
-          final _transaction = this.transactions[i];
-          final _simpleCurrencyValue = _simpleCurrencyNumberFormat
-              .format(_simpleCurrencyNumberFormat.parse(_transaction.amount.toString()));
+          final transaction = this.transactions[i];
+          final simpleCurrencyValue = simpleCurrencyNumberFormat
+              .format(simpleCurrencyNumberFormat.parse(transaction.amount.toString()));
           return Dismissible(
             background: Container(color: Colors.red),
-            key: Key(_transaction.description + _transaction.fullAccountName),
+            key: Key(transaction.description + transaction.fullAccountName),
             onDismissed: (direction) async {
-              transactions.remove(_transaction);
+              transactions.remove(transaction);
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text("Transaction removed.")));
             },
             child: ListTile(
                 title: Text(
-                  _transaction.description,
+                  transaction.description,
                 ),
-                trailing: Text(_simpleCurrencyValue),
+                trailing: Text(simpleCurrencyValue),
                 onTap: () {
-                  print(_transaction);
+                  print(transaction);
                 }),
           );
         },
@@ -52,8 +52,8 @@ class TransactionsView extends StatelessWidget {
       );
 
       return Container(
-        child: this.transactions.length > 0
-            ? _transactionsBuilder
+        child: this.transactions.isNotEmpty
+            ? transactionsBuilder
             : Center(child: Text("No transactions.")),
       );
     });

@@ -27,13 +27,13 @@ class Account {
   String name;
 
   Account.fromJson(Map<String, dynamic> json) {
-    this.balance = json['balance'];
-    this.children = [];
+    balance = json['balance'];
+    children = [];
     if (json['children'] != null) {
       final List<dynamic> rawChildren = json['children'];
-      rawChildren.forEach((element) {
-        this.children.add(Account.fromJson(element));
-      });
+      for (var element in rawChildren) {
+        children.add(Account.fromJson(element));
+      }
     }
     code = json['code'];
     commodityM = json['commodityM'];
@@ -74,25 +74,27 @@ class Account {
 
   Account.fromList(List<dynamic> items) {
     final trimmed = [];
-    for (var item in items) trimmed.add(item.trim());
+    for (var item in items) {
+      trimmed.add(item.trim());
+    }
 
-    this.type = trimmed[0];
-    this.fullName = trimmed[1];
-    this.name = trimmed[2];
-    this.code = trimmed[3];
-    this.description = trimmed[4];
-    this.color = trimmed[5];
-    this.notes = trimmed[6];
-    this.commodityM = trimmed[7];
-    this.commodityN = trimmed[8];
-    this.hidden = trimmed[9] == 'T' ? true : false;
-    this.tax = trimmed[10] == 'T' ? true : false;
-    this.placeholder = trimmed[11] == 'T' ? true : false;
+    type = trimmed[0];
+    fullName = trimmed[1];
+    name = trimmed[2];
+    code = trimmed[3];
+    description = trimmed[4];
+    color = trimmed[5];
+    notes = trimmed[6];
+    commodityM = trimmed[7];
+    commodityN = trimmed[8];
+    hidden = trimmed[9] == 'T' ? true : false;
+    tax = trimmed[10] == 'T' ? true : false;
+    placeholder = trimmed[11] == 'T' ? true : false;
   }
 
   @override
   toString() {
-    return "Account{balance: ${this.balance}, children: List<Account>[${this.children ?? [].length}], code: ${this.code}, commodityM: ${this.commodityM}, commodityN: ${this.commodityN}, color: ${this.color}, description: ${this.description}, fullName: ${this.fullName}, hidden: ${this.hidden}, notes: ${this.notes}, parentFullName: ${this.parentFullName}, placeholder: ${this.placeholder}, tax: ${this.tax}, type: ${this.type}, name: ${this.name}}";
+    return "Account{balance: ${balance}, children: List<Account>[${children ?? [].length}], code: ${code}, commodityM: ${commodityM}, commodityN: ${commodityN}, color: ${color}, description: ${description}, fullName: ${fullName}, hidden: ${hidden}, notes: ${notes}, parentFullName: ${parentFullName}, placeholder: ${placeholder}, tax: ${tax}, type: ${type}, name: ${name}}";
   }
 }
 
@@ -139,7 +141,7 @@ class AccountsModel extends ChangeNotifier {
   Future<Account> get favoriteCreditAccount async {
     final prefs = await _prefs;
     final favoriteCreditAccountString =
-        prefs.getString('favoriteCreditAccount') ?? null;
+        prefs.getString('favoriteCreditAccount');
 
     if (favoriteCreditAccountString != null) {
       return Account.fromJson(jsonDecode(favoriteCreditAccountString));
@@ -174,64 +176,64 @@ class AccountsModel extends ChangeNotifier {
       UnmodifiableListView(_recentDebitAccounts);
 
   List<Account> parseAccountCSV(String csv) {
-    var _detector = new FirstOccurrenceSettingsDetector(
+    var detector = FirstOccurrenceSettingsDetector(
       eols: ['\r\n', '\n'],
     );
 
-    final _converter = CsvToListConverter(
-      csvSettingsDetector: _detector,
+    final converter = CsvToListConverter(
+      csvSettingsDetector: detector,
       textDelimiter: '"',
       shouldParseNumbers: false,
     );
 
-    final _parsed = _converter.convert(csv.trim());
+    final parsed = converter.convert(csv.trim());
     // Remove header row
-    _parsed.removeAt(0);
+    parsed.removeAt(0);
 
-    final _accounts = <Account>[];
-    final _transactionAccounts = <Account>[];
-    for (var line in _parsed) {
-      final _account = Account.fromList(line);
-      final _lastIndex = _account.fullName.lastIndexOf(":");
-      final _hasParent = _lastIndex > 0;
-      var _parentFullName = '';
-      if (_hasParent) {
-        _parentFullName = _account.fullName.substring(0, _lastIndex);
+    final accounts = <Account>[];
+    final transactionAccounts = <Account>[];
+    for (var line in parsed) {
+      final account = Account.fromList(line);
+      final lastIndex = account.fullName.lastIndexOf(":");
+      final hasParent = lastIndex > 0;
+      var parentFullName = '';
+      if (hasParent) {
+        parentFullName = account.fullName.substring(0, lastIndex);
       }
 
-      _account.parentFullName = _parentFullName;
-      _accounts.add(_account);
+      account.parentFullName = parentFullName;
+      accounts.add(account);
 
-      if (!_account.placeholder) {
+      if (!account.placeholder) {
         // This account is valid to make transactions to/from
-        _transactionAccounts.add(_account);
+        transactionAccounts.add(account);
       }
     }
-    _validTransactionAccounts = _transactionAccounts;
+    _validTransactionAccounts = transactionAccounts;
 
-    final _lookup = Map<String, Account>();
-    final List<Account> _hierarchicalAccounts = [];
+    final lookup = <String, Account>{};
+    final List<Account> hierarchicalAccounts = [];
 
-    for (var _account in _accounts) {
-      if (_lookup.containsKey(_account.parentFullName)) {
-        final _parent = _lookup[_account.parentFullName];
-        _parent.children.add(_account);
+    for (var _account in accounts) {
+      if (lookup.containsKey(_account.parentFullName)) {
+        final parent = lookup[_account.parentFullName];
+        parent.children.add(_account);
       } else {
-        _hierarchicalAccounts.add(_account);
+        hierarchicalAccounts.add(_account);
       }
 
-      _lookup[_account.fullName] = _account;
+      lookup[_account.fullName] = _account;
     }
-    return _hierarchicalAccounts;
+    return hierarchicalAccounts;
   }
 
   Future<List<Account>> get accounts async {
     final file = await _localFile;
     String csvString = await file.readAsString();
-    final _parsedAccounts = parseAccountCSV(csvString);
-    _accounts = _parsedAccounts;
+    final parsedAccounts = parseAccountCSV(csvString);
+    _accounts = parsedAccounts;
 
-    return _parsedAccounts;
+    return parsedAccounts;
   }
 
   Account getAccountByFullName(String fullName) {

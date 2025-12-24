@@ -12,6 +12,8 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 
 class Export extends StatefulWidget {
+  const Export({super.key});
+
   @override
   _ExportState createState() => _ExportState();
 }
@@ -54,14 +56,14 @@ class _ExportState extends State<Export> {
             future: Provider.of<TransactionsModel>(context, listen: false)
                 .readTransactionsCsv(),
             builder: (context, AsyncSnapshot<String> snapshot) {
-              String _text;
+              String text;
               if (snapshot.hasData) {
                 // Remove 1 for header row, divide by 2 for double entry
-                final _numTransactions =
+                final numTransactions =
                     ("\n".allMatches(snapshot.data!).length - 1) / 2;
-                _text = "${_numTransactions.toInt()} transaction(s)";
+                text = "${numTransactions.toInt()} transaction(s)";
               } else {
-                _text = "0 transactions";
+                text = "0 transactions";
               }
 
               return Column(
@@ -71,7 +73,7 @@ class _ExportState extends State<Export> {
                     padding: EdgeInsets.symmetric(horizontal: 30.0),
                     child: Platform.isIOS
                         ? Text(
-                            "$_text will be written to this application's directory (/On My iPhone/GnuCashMobile)",
+                            "$text will be written to this application's directory (/On My iPhone/GnuCashMobile)",
                           )
                         : Text("Export to: $_directory"),
                   ),
@@ -79,7 +81,7 @@ class _ExportState extends State<Export> {
                       ? SizedBox.shrink()
                       : TextButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
+                            backgroundColor: WidgetStateProperty.all<Color>(
                                 Constants.darkAccent),
                           ),
                           onPressed: () => _selectFolder(),
@@ -103,28 +105,22 @@ class _ExportState extends State<Export> {
                   ),
                   TextButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
+                      backgroundColor: WidgetStateProperty.all<Color>(
                           Constants.darkAccent),
                     ),
                     onPressed: () async {
-                      if (_directoryPath == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Please choose a valid directory")));
-                        return null;
-                      }
-
                       if (!snapshot.hasData) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text("No transactions to export.")));
                         return;
                       }
 
-                      final _yearMonthDay =
+                      final yearMonthDay =
                           DateFormat('yyyyMMdd').format(DateTime.now());
                       try {
-                        final _fileName =
-                            "$_directoryPath/${_yearMonthDay}_${DateTime.now().millisecond}.gnucash_transactions.csv";
-                        await File(_fileName).writeAsString(snapshot.data!);
+                        final fileName =
+                            "$_directoryPath/${yearMonthDay}_${DateTime.now().millisecond}.gnucash_transactions.csv";
+                        await File(fileName).writeAsString(snapshot.data!);
 
                         if (deleteTransactionsOnExport) {
                           Provider.of<TransactionsModel>(context, listen: false)

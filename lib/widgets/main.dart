@@ -25,6 +25,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -66,19 +68,22 @@ class _MyHomePageState extends State<MyHomePage> {
           future: Provider.of<AccountsModel>(context, listen: false).accounts,
           builder: (context, AsyncSnapshot<List<Account>> snapshot) {
             final accounts = snapshot.hasData ? snapshot.data : [];
-            final _hasImported = accounts.length > 0;
+            final hasImported = accounts.length > 0;
 
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: Constants.darkBG,
                 title: Text(widget.title),
               ),
-              body: _hasImported ? ListOfAccounts(accounts: accounts) : Intro(),
+              body: hasImported ? ListOfAccounts(accounts: accounts) : Intro(),
               drawer: Drawer(
                   child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Constants.darkBG,
+                    ),
                     child: Text(
                       "GnuCash Mobile",
                       style: TextStyle(
@@ -86,14 +91,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         fontSize: 20,
                       ),
                     ),
-                    decoration: BoxDecoration(
-                      color: Constants.darkBG,
-                    ),
                   ),
                   ListTile(
                       title: Text('Import Accounts'),
                       onTap: () async {
-                        if (_hasImported) {
+                        if (hasImported) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
                                 "Accounts already imported. Please remove them first."),
@@ -105,33 +107,31 @@ class _MyHomePageState extends State<MyHomePage> {
                         FilePickerResult result =
                             await FilePicker.platform.pickFiles();
 
-                        if (result != null) {
-                          try {
-                            final _file = File(result.files.single.path);
-                            String contents = await _file.readAsString();
-                            Provider.of<AccountsModel>(context, listen: false)
-                                .addAll(contents);
-                            Navigator.pop(context);
-                          } catch (e) {
-                            print(e);
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                  "Oops, something went wrong while importing. Please correct any errors in your Accounts CSV and try again."),
-                            ));
-                          }
+                        try {
+                          final _file = File(result.files.single.path);
+                          String contents = await _file.readAsString();
+                          Provider.of<AccountsModel>(context, listen: false)
+                              .addAll(contents);
+                          Navigator.pop(context);
+                        } catch (e) {
+                          print(e);
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                "Oops, something went wrong while importing. Please correct any errors in your Accounts CSV and try again."),
+                          ));
                         }
-                      }),
+                                            }),
                   ListTile(
                       title: Text('Export'),
                       onTap: () async {
-                        final _success = await Navigator.push(
+                        final success = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => Export(),
                           ),
                         );
 
-                        if (_success != null && _success) {
+                        if (success != null && success) {
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("Transactions exported!")));
@@ -194,20 +194,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               )),
-              floatingActionButton: _hasImported
+              floatingActionButton: hasImported
                   ? Builder(builder: (context) {
                       return FloatingActionButton(
                         backgroundColor: Constants.darkBG,
                         child: Icon(Icons.add),
                         onPressed: () async {
-                          final _success = await Navigator.push(
+                          final success = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => TransactionForm(),
                             ),
                           );
 
-                          if (_success != null && _success) {
+                          if (success != null && success) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 content: Text("Transaction created!")));
                           }
@@ -236,12 +236,12 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Yes'),
               onPressed: onConfirm,
+              child: Text('Yes'),
             ),
             TextButton(
-              child: Text('No'),
               onPressed: onCancel,
+              child: Text('No'),
             ),
           ],
         );
