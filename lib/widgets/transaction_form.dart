@@ -56,6 +56,7 @@ class _TransactionFormState extends State<TransactionForm> {
         ),
         body: Form(
           autovalidateMode: AutovalidateMode.disabled,
+          key: _key,
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             children: <Widget>[
@@ -233,7 +234,6 @@ class _TransactionFormState extends State<TransactionForm> {
               ),
             ],
           ),
-          key: _key,
         ),
         floatingActionButton:
             // Builder(builder: (context) {

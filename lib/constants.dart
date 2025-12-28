@@ -17,18 +17,18 @@ class Constants {
     scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
       elevation: 0, toolbarTextStyle: TextTheme(
-        headline6: TextStyle(
+        titleLarge: TextStyle(
           color: Colors.black,
           fontSize: 20,
           fontWeight: FontWeight.w800,
         ),
-      ).bodyText2, titleTextStyle: TextTheme(
-        headline6: TextStyle(
+      ).bodyMedium, titleTextStyle: TextTheme(
+        titleLarge: TextStyle(
           color: Colors.black,
           fontSize: 20,
           fontWeight: FontWeight.w800,
         ),
-      ).headline6,
+      ).titleLarge,
     ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: lightAccent), colorScheme: ColorScheme(brightness: Brightness.light),
   );
 
@@ -39,19 +39,19 @@ class Constants {
     appBarTheme: AppBarTheme(
       backgroundColor: darkBG,
       elevation: 0, toolbarTextStyle: TextTheme(
-        headline6: TextStyle(
+        titleLarge: TextStyle(
           color: lightBG,
           fontSize: 20,
           fontWeight: FontWeight.w800,
         ),
-      ).bodyText2, titleTextStyle: TextTheme(
-        headline6: TextStyle(
+      ).bodyMedium, titleTextStyle: TextTheme(
+        titleLarge: TextStyle(
           color: lightBG,
           fontSize: 20,
           fontWeight: FontWeight.w800,
         ),
-      ).headline6,
-    ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: darkAccent), colorScheme: ColorScheme(background: darkBG),
+      ).titleLarge,
+    ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: darkAccent), colorScheme: ColorScheme(surface: darkBG),
   );
 
   // static List<T> map<T>(List list, Function handler) {

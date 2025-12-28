@@ -94,7 +94,7 @@ class Account {
 
   @override
   toString() {
-    return "Account{balance: ${balance}, children: List<Account>[${children ?? [].length}], code: ${code}, commodityM: ${commodityM}, commodityN: ${commodityN}, color: ${color}, description: ${description}, fullName: ${fullName}, hidden: ${hidden}, notes: ${notes}, parentFullName: ${parentFullName}, placeholder: ${placeholder}, tax: ${tax}, type: ${type}, name: ${name}}";
+    return "Account{balance: $balance, children: List<Account>[${children ?? [].length}], code: $code, commodityM: $commodityM, commodityN: $commodityN, color: $color, description: $description, fullName: $fullName, hidden: $hidden, notes: $notes, parentFullName: $parentFullName, placeholder: $placeholder, tax: $tax, type: $type, name: $name}";
   }
 }
 

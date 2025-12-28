@@ -55,7 +55,7 @@ class ListOfAccounts extends StatelessWidget {
                 simpleCurrencyValue
               ),
               onTap: () {
-                if (account.children.length == 0) {
+                if (account.children.isEmpty) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {

@@ -52,7 +52,7 @@ class Transaction {
 
   @override
   toString() {
-    return """Transaction{date: ${date}, id: ${id}, number: ${number}, description: ${description}, notes: ${notes}, commodityCurrency: ${commodityCurrency}, voidReason: ${voidReason}, action: ${action}, memo: ${memo}, fullAccountName: ${fullAccountName}, accountName: ${accountName}, amountWithSymbol: ${amountWithSymbol}, amount: ${amount}, reconcile: ${reconcile}, reconcileDate: ${reconcileDate}, ratePrice: ${ratePrice}}""";
+    return """Transaction{date: $date, id: $id, number: $number, description: $description, notes: $notes, commodityCurrency: $commodityCurrency, voidReason: $voidReason, action: $action, memo: $memo, fullAccountName: $fullAccountName, accountName: $accountName, amountWithSymbol: $amountWithSymbol, amount: $amount, reconcile: $reconcile, reconcileDate: $reconcileDate, ratePrice: $ratePrice}""";
   }
 
   List<dynamic> toList() {
@@ -143,7 +143,7 @@ class TransactionsModel extends ChangeNotifier {
         }
       }
 
-      this._transactionsByAccountFullName = transactionsByAccountFullName;
+      _transactionsByAccountFullName = transactionsByAccountFullName;
 
       return UnmodifiableListView(transactions);
     } catch (e) {

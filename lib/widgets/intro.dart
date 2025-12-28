@@ -25,8 +25,8 @@ class Intro extends StatelessWidget {
           }
 
           try {
-            final _file = File(result.files.single.path!);
-            String contents = await _file.readAsString();
+            final file = File(result.files.single.path!);
+            String contents = await file.readAsString();
             Provider.of<AccountsModel>(context, listen: false)
                 .addAll(contents);
           } catch (e) {
