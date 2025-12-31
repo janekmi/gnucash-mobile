@@ -29,7 +29,7 @@ class Constants {
           fontWeight: FontWeight.w800,
         ),
       ).titleLarge,
-    ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: lightAccent), colorScheme: ColorScheme(brightness: Brightness.light),
+    ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: lightAccent),
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -51,7 +51,7 @@ class Constants {
           fontWeight: FontWeight.w800,
         ),
       ).titleLarge,
-    ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: darkAccent), colorScheme: ColorScheme(surface: darkBG),
+    ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: darkAccent),
   );
 
   // static List<T> map<T>(List list, Function handler) {
