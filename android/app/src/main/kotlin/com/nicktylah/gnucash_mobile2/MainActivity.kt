@@ -1,4 +1,4 @@
-package com.example.xxx
+package com.nicktylah.gnucash_mobile2
 
 import io.flutter.embedding.android.FlutterActivity
 
